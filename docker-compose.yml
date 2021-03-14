@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./dockerfiles/golang/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./src:/app/src
+    working_dir: /app/src
+    tty: true
+    depends_on: 
+      - postgres
+
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: ./dockerfiles/postgres/Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app
