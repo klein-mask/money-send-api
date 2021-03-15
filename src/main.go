@@ -3,12 +3,22 @@ package main
 import (
     "net/http"
     "github.com/labstack/echo"
+    "github.com/labstack/echo/middleware"
 )
 
+type User struct {
+    Id string
+    Name string
+    Password
+}
+
 func main() {
-    e := echo.New()
-    e.GET("/", func(c echo.Context) error {
-        return c.String(http.StatusOK, "Hello, World! from docker 222")
-    })
-    e.Logger.Fatal(e.Start(":8080"))
+    router := newRouter()
+    router.Logger.Fatal(router.Start(":8080"))
+}
+
+
+
+func helloHandler(c echo.Context) error {
+    return c.String(http.StatusOK, "Hello")
 }
