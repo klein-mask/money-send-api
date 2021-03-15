@@ -14,8 +14,8 @@ func Init() {
 
     userController := controllers.NewUserController(NewSqlHandler())
 
-    e.GET("/ping", func(c echo.Context) error {
-        return c.String(http.StatusOK, "ping ok")
+    e.GET("/healthcheck", func(c echo.Context) error {
+        return c.String(http.StatusOK, "healthcheck ok")
     })
 
     e.GET("/users", func(c echo.Context) error {
@@ -28,22 +28,12 @@ func Init() {
         userController.Create(c)
         return c.String(http.StatusOK, "created")
     })
-    /*
 
-    e.GET("/users", func(c echo.Context) error {
-        users := userController.GetUser() 
-        c.Bind(&users) 
-        return c.JSON(http.StatusOK, users)
-    })
-
-
-
-    e.DELETE("/users/:id", func(c echo.Context) error {
+    e.DELETE("/users/delete/:id", func(c echo.Context) error {
         id := c.Param("id")
         userController.Delete(id)
         return c.String(http.StatusOK, "deleted")
     })
-    */
-    // Start server
+ 
     e.Logger.Fatal(e.Start(":1323"))
 }

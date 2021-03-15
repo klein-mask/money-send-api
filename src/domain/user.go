@@ -1,7 +1,9 @@
 package domain
 
 type User struct {
-    ID   int    `json:"id" gorm:"primary_key"`
+    gorm.Model
+    //ID   int    `json:"id" gorm:"primary_key"`
     Name string `json:"name"`
-    Password string `json:"password"`
+    MoneyId  string `json:"money_id" gorm:"unique;not null;index:idx_money_id"`
+    //Password string `json:"password"`
 }

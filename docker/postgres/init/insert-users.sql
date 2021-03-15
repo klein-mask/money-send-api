@@ -1,2 +1,2 @@
 delete from users;
-insert into users values(1, 'app_user', 'app_user_pass');
+insert into users values(1, 'app_user');
