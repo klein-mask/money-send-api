@@ -5,12 +5,12 @@ services:
     container_name: app
     build:
       context: .
-      dockerfile: ./dockerfiles/golang/Dockerfile
+      dockerfile: ./docker/golang/Dockerfile
     ports:
-      - 8080:8080
+      - 1323:1323
     volumes:
-      - ./src:/app/src
-    working_dir: /app/src
+      - .:/money-send-api
+    working_dir: /money-send-api
     tty: true
     depends_on: 
       - postgres
@@ -19,7 +19,7 @@ services:
     container_name: postgres
     build:
       context: .
-      dockerfile: ./dockerfiles/postgres/Dockerfile
+      dockerfile: ./docker/postgres/Dockerfile
     ports:
       - 5432:5432
     environment:
