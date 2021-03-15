@@ -13,10 +13,17 @@ func (db *UserRepository) Store(u domain.User) {
 }
 
 func (db *UserRepository) Select() []domain.User {
-    user := []domain.User{}
-    db.FindAll(&user)
+    users := []domain.User{}
+    db.FindAll(&users)
+    return users
+}
+
+func (db *UserRepository) SelectUser(id string) domain.User {
+    user := domain.User{}
+    db.Where("id = ?", id).Find(&user)
     return user
 }
+
 func (db *UserRepository) Delete(id string) {
     user := []domain.User{}
     db.DeleteById(&user, id)

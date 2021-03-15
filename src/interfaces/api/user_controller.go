@@ -31,9 +31,18 @@ func (controller *UserController) Create(c echo.Context) {
     return
 }
 
-func (controller *UserController) GetUser() []domain.User {
+func (controller *UserController) GetUsers() []domain.User {
     res := controller.Interactor.GetInfo()
     return res
+}
+
+func (controller *UserController) GetUser() domain.User {
+    res := controller.Interactor.GetUser()
+    return res
+}
+
+func (controller *userController) Update(c echo.Context) {
+    u := 
 }
 
 func (controller *UserController) Delete(id string) {

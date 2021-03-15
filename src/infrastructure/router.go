@@ -19,14 +19,25 @@ func Init() {
     })
 
     e.GET("/users", func(c echo.Context) error {
-        users := userController.GetUser() 
+        users := userController.GetUsers() 
         c.Bind(&users) 
+        return c.JSON(http.StatusOK, users)
+    })
+
+    e.GET("/users/:user_id", func(c echo.Context) error {
+        user := userController.GetUser() 
+        c.Bind(&user) 
         return c.JSON(http.StatusOK, users)
     })
 
     e.POST("/users", func(c echo.Context) error {
         userController.Create(c)
         return c.String(http.StatusOK, "created")
+    })
+
+    e.PUT("/users/update", func(c echo.Context) error {
+        userController.Update(c)
+        return c.String(http.StatusOK, "updated")
     })
 
     e.DELETE("/users/delete/:id", func(c echo.Context) error {
