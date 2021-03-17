@@ -35,6 +35,10 @@ func (db *UserRepository) UpdateBalance(userId string, balance int64) error {
     return db.Update(&user, "ID = ?", userId, "balance", balance)
 }
 
+func (db *UserRepository) DeleteAllUser() error {
+    return db.DeleteAll("users")
+}
+
 func (db *UserRepository) DeleteUser(id string) error {
     user := []domain.User{}
     return db.DeleteById(&user, id)

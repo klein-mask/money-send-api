@@ -77,6 +77,15 @@ func (controller *UserController) UpdateBalance(c echo.Context) error {
     return c.String(http.StatusOK, msg)
 }
 
+func (controller *UserController) DeleteAllUser(c echo.Context) error {
+    err := controller.Interactor.DeleteAllUser()
+    if err != nil {
+        return err
+    }
+    msg := "[Success] : Deleted all users."
+    return c.String(http.StatusOK, msg)
+}
+
 func (controller *UserController) DeleteUser(c echo.Context) error {
     userId := c.Param("user_id")
     err := controller.Interactor.DeleteUser(userId)
