@@ -9,7 +9,7 @@ services:
     ports:
       - 1323:1323
     volumes:
-      - .:/money-send-api
+      - ./src:/money-send-api
     working_dir: /money-send-api
     tty: true
     depends_on: 
