@@ -7,6 +7,6 @@ import (
 type User struct {
     gorm.Model
     Name string `json:"name"`
-    Balance uint `json:"balance"`
+    Balance int64 `json:"balance"`
     //Moneys []*Money `json:"money"`
 }

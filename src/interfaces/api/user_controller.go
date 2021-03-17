@@ -36,13 +36,13 @@ func (controller *UserController) GetUsers() []domain.User {
     return res
 }
 
-func (controller *UserController) GetUser() domain.User {
-    res := controller.Interactor.GetUser()
+func (controller *UserController) SelectUser(id string) domain.User {
+    res := controller.Interactor.SelectUser(id)
     return res
 }
 
-func (controller *userController) Update(c echo.Context) {
-    u := 
+func (controller *UserController) UpdateBalance(id string, balance int64) {
+    controller.Interactor.UpdateBalance(id, balance)
 }
 
 func (controller *UserController) Delete(id string) {

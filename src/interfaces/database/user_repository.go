@@ -20,8 +20,13 @@ func (db *UserRepository) Select() []domain.User {
 
 func (db *UserRepository) SelectUser(id string) domain.User {
     user := domain.User{}
-    db.Where("id = ?", id).Find(&user)
+    db.FindById(&user, id)
     return user
+}
+
+func (db *UserRepository) UpdateBalance(id string, balance int64) {
+    user := domain.User{}
+    db.UpdateBalanceById(&user, id, balance)
 }
 
 func (db *UserRepository) Delete(id string) {

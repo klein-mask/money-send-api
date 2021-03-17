@@ -4,6 +4,7 @@ import (
     "net/http"
     "github.com/labstack/echo"
     "github.com/labstack/echo/middleware"
+    "strconv"
     controllers "money-send-api/src/interfaces/api"
 )
 
@@ -24,19 +25,23 @@ func Init() {
         return c.JSON(http.StatusOK, users)
     })
 
-    e.GET("/users/:user_id", func(c echo.Context) error {
-        user := userController.GetUser() 
-        c.Bind(&user) 
-        return c.JSON(http.StatusOK, users)
-    })
-
     e.POST("/users", func(c echo.Context) error {
         userController.Create(c)
         return c.String(http.StatusOK, "created")
     })
 
-    e.PUT("/users/update", func(c echo.Context) error {
-        userController.Update(c)
+    e.GET("/users/:user_id", func(c echo.Context) error {
+        user_id := c.Param("user_id")
+        user := userController.SelectUser(user_id) 
+        c.Bind(&user) 
+        return c.JSON(http.StatusOK, user)
+    })
+
+    e.PUT("/users/balance/:user_id", func(c echo.Context) error {
+        user_id := c.Param("user_id")
+        barance := c.FormValue("balance")
+        balance64, _ := strconv.ParseInt(barance, 10, 64)
+        userController.UpdateBalance(user_id, balance64)
         return c.String(http.StatusOK, "updated")
     })
 
