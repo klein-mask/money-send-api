@@ -1,11 +1,10 @@
 package database
 
-// database/user_repositoryが引数として受けるために必要
 type SqlHandler interface {
     Create(object interface{})
-    //FindUser(object interface{})
     FindById(object interface{}, id string)
     FindAll(object interface{})
-    UpdateBalanceById(obj interface{}, id string, balance int64)
+    Update(obj interface{}, cond string, condValue interface{}, column string, columnValue interface{})
+    UpdateByExpr(obj interface{}, cond string, condValue interface{}, column string, columnExpr string, columnValue ...interface{})
     DeleteById(object interface{}, id string)
 }

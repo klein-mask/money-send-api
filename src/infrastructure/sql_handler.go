@@ -35,9 +35,14 @@ func (handler *SqlHandler) FindAll(obj interface{}) {
     handler.db.Find(obj)
 }
 
-func (handler *SqlHandler) UpdateBalanceById(obj interface{}, id string, balance int64) {
-    handler.db.Model(obj).Where("ID = ?", id).Update("Balance", balance)
+func (handler *SqlHandler) Update(obj interface{}, cond string, condValue interface{}, column string, columnValue interface{}) {
+    handler.db.Model(obj).Where(cond, condValue).Update(column, columnValue)
 }
+
+func (handler *SqlHandler) UpdateByExpr(obj interface{}, cond string, condValue interface{}, column string, columnExpr string, columnValue ...interface{}) {
+    handler.db.Model(obj).Where(cond, condValue).Update(column, gorm.Expr(columnExpr, columnValue))
+}
+
 
 func (handler *SqlHandler) DeleteById(obj interface{}, id string) {
     handler.db.Delete(obj, id)

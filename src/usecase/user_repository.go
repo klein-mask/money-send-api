@@ -6,9 +6,10 @@ import (
 
 // usecase/user_interactorが引数として受けるために必要
 type UserRepository interface {
-    Store(domain.User)
-    Select() []domain.User
-    SelectUser(string) domain.User
+    AddUser(domain.User)
+    GetAllUsers() []domain.User
+    GetUser(string) domain.User
+    UpdateAllBalance(balance int64)
     UpdateBalance(id string, balance int64)
-    Delete(string)
+    DeleteUser(string)
 }

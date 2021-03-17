@@ -6,22 +6,26 @@ type UserInteractor struct {
     UserRepository UserRepository
 }
 
-func (interactor *UserInteractor) Add(u domain.User) {
-    interactor.UserRepository.Store(u)
+func (interactor *UserInteractor) AddUser(u domain.User) {
+    interactor.UserRepository.AddUser(u)
 }
 
-func (interactor *UserInteractor) GetInfo() []domain.User {
-    return interactor.UserRepository.Select()
+func (interactor *UserInteractor) GetAllUsers() []domain.User {
+    return interactor.UserRepository.GetAllUsers()
 }
 
-func (interactor *UserInteractor) SelectUser(id string) domain.User {
-    return interactor.UserRepository.SelectUser(id)
+func (interactor *UserInteractor) GetUser(id string) domain.User {
+    return interactor.UserRepository.GetUser(id)
+}
+
+func (interactor *UserInteractor) UpdateAllBalance(balance int64) {
+    interactor.UserRepository.UpdateAllBalance(balance)
 }
 
 func (interactor *UserInteractor) UpdateBalance(id string, balance int64) {
     interactor.UserRepository.UpdateBalance(id, balance)
 }
 
-func (interactor *UserInteractor) Delete(id string) {
-    interactor.UserRepository.Delete(id)
+func (interactor *UserInteractor) DeleteUser(id string) {
+    interactor.UserRepository.DeleteUser(id)
 }

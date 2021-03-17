@@ -22,29 +22,34 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
     }
 }
 
-func (controller *UserController) Create(c echo.Context) {
+func (controller *UserController) AddUser(c echo.Context) {
     u := domain.User{}
     c.Bind(&u)
-    controller.Interactor.Add(u)
-    createdUsers := controller.Interactor.GetInfo()
-    c.JSON(201, createdUsers)
+    controller.Interactor.AddUser(u)
+    users := controller.Interactor.GetAllUsers()
+    c.JSON(201, users)
     return
 }
 
-func (controller *UserController) GetUsers() []domain.User {
-    res := controller.Interactor.GetInfo()
+func (controller *UserController) GetAllUsers() []domain.User {
+    res := controller.Interactor.GetAllUsers()
     return res
 }
 
-func (controller *UserController) SelectUser(id string) domain.User {
-    res := controller.Interactor.SelectUser(id)
+func (controller *UserController) GetUser(id string) domain.User {
+    res := controller.Interactor.GetUser(id)
     return res
 }
+
+func (controller *UserController) UpdateAllBalance(balance int64) {
+    controller.Interactor.UpdateAllBalance(balance)
+}
+
 
 func (controller *UserController) UpdateBalance(id string, balance int64) {
     controller.Interactor.UpdateBalance(id, balance)
 }
 
-func (controller *UserController) Delete(id string) {
-    controller.Interactor.Delete(id)
+func (controller *UserController) DeleteUser(id string) {
+    controller.Interactor.DeleteUser(id)
 }
