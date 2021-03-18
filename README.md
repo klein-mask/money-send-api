@@ -19,7 +19,7 @@ curl -X GET 'http://localhost:1323/users/123'
 
 ### Update all user's balance
 ```
-curl -X PUT 'http://localhost:1323/users/balance/all' -H 'Content-Type: application/json' -d '{"balance"=10000}'
+curl -X PUT 'http://localhost:1323/users/balance' -H 'Content-Type: application/json' -d '{"balance":10000}'
 ```
 
 ### Update user's balance

@@ -114,7 +114,6 @@ func TestUpdateAllBalance(t *testing.T) {
     const addBalance int64 = 10000
 
     requestData := `{"balance":` + strconv.FormatInt(addBalance, 10) + "}"
-    //requestData := `{"balance":10000}`
     bodyReader := strings.NewReader(requestData)
 
     req := httptest.NewRequest("PUT", "/users/balance", bodyReader)
@@ -135,6 +134,54 @@ func TestUpdateAllBalance(t *testing.T) {
         if u.IsBalanceReceivable {
             oldBalance += addBalance
         }
-        assert.Equal(t, newBalance, oldBalance)
+        assert.Equal(t, oldBalance, newBalance)
     }
+}
+
+
+func TestUpdateBalance(t *testing.T) {
+    user := testUsers()[0]
+    handler := NewSqlHandler()
+    router := NewRouter()
+
+    handler.DeleteById(&domain.User{}, user.id)
+    u := domain.User{}
+    idInt64, _ := strconv.ParseInt(user.id, 10, 64)
+    u.ID = uint(idInt64)
+    u.Name = user.name
+    u.Balance, _ = strconv.ParseInt(user.balance, 10, 64)
+    u.IsBalanceReceivable, _ = strconv.ParseBool(user.isBalanceReceivable)
+    handler.Create(&u)
+
+    const updatedBalance int64 = 10000
+
+    requestData := `{"balance":` + strconv.FormatInt(updatedBalance, 10) + "}"
+    bodyReader := strings.NewReader(requestData)
+
+    req := httptest.NewRequest("PUT", "/users/balance/" + user.id, bodyReader)
+    req.Header.Add("Content-Type", "application/json")
+    req.Header.Add("Accept", "application/json")
+
+    rec := httptest.NewRecorder()
+
+    router.ServeHTTP(rec, req)
+    assert.Equal(t, http.StatusOK, rec.Code)
+
+    handler.FindById(&u, user.id)
+    newBalance := u.Balance
+    assert.Equal(t, updatedBalance, newBalance)
+}
+
+func TestDeleteUser(t *testing.T) {
+    user := testUsers()[0]
+    router := NewRouter()
+    handler := NewSqlHandler()
+
+    req := httptest.NewRequest("DELETE", "/users/delete/" + user.id, nil)
+    rec := httptest.NewRecorder()
+    router.ServeHTTP(rec, req)
+
+    u := domain.User{}
+    handler.FindById(&u, user.id)
+    assert.Equal(t, "", u.Name)
 }

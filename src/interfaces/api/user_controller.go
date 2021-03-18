@@ -2,14 +2,10 @@ package controllers
 
 import (
     "net/http"
-    "strconv"
     "money-send-api/domain"
     "money-send-api/interfaces/database"
     "money-send-api/usecase"
-
     "github.com/labstack/echo"
-    _ "fmt"
-    _ "encoding/json"
 )
 
 type UserController struct {
@@ -64,8 +60,6 @@ func (controller *UserController) GetUser(c echo.Context) error {
 func (controller *UserController) UpdateAllBalance(c echo.Context) error {
     jsonData := JsonData{}
     c.Bind(&jsonData)
-    //bytes, _ := json.Marshal(jsonData) // jsonのバイナリが出力される
-    //fmt.Println(string(bytes))
     err := controller.Interactor.UpdateAllBalance(jsonData.Balance)
     if err != nil {
         return err
@@ -77,8 +71,9 @@ func (controller *UserController) UpdateAllBalance(c echo.Context) error {
 
 func (controller *UserController) UpdateBalance(c echo.Context) error {
     userId := c.Param("user_id")
-    barance, _ := strconv.ParseInt(c.FormValue("balance"), 10, 64)
-    err := controller.Interactor.UpdateBalance(userId, barance)
+    jsonData := JsonData{}
+    c.Bind(&jsonData)
+    err := controller.Interactor.UpdateBalance(userId, jsonData.Balance)
     if err != nil {
         return err
     }
@@ -89,6 +84,7 @@ func (controller *UserController) UpdateBalance(c echo.Context) error {
 func (controller *UserController) DeleteUser(c echo.Context) error {
     userId := c.Param("user_id")
     err := controller.Interactor.DeleteUser(userId)
+    //fmt.Println(string(userId))
     if err != nil {
         return err
     }
