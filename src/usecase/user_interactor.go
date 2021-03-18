@@ -25,11 +25,11 @@ func (interactor *UserInteractor) UpdateAllBalance(balance int64) error {
 func (interactor *UserInteractor) UpdateBalance(userId string, balance int64) error {
     return interactor.UserRepository.UpdateBalance(userId, balance)
 }
-
+/*
 func (interactor *UserInteractor) DeleteAllUser() error {
     return interactor.UserRepository.DeleteAllUser()
 }
-
+*/
 func (interactor *UserInteractor) DeleteUser(userId string) error {
     return interactor.UserRepository.DeleteUser(userId)
 }

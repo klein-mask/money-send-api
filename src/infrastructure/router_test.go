@@ -8,11 +8,12 @@ import (
     "strings"
     "encoding/json"
     "money-send-api/domain"
+    //"github.com/labstack/echo"
 )
 
 const (
-    id string = "535435"
-    name string = "test_user4"
+    id string = "999999999"
+    name string = "test_user"
     balance string = "100"
     isBalanceReceivable string = "true"
 
@@ -33,6 +34,9 @@ func TestHealthcheckHandler(t *testing.T) {
 }
 
 func TestAddUser(t *testing.T) {
+    // テスト用ユーザーのレコードは事前に削除する
+    NewSqlHandler().DeleteById(&domain.User{}, id)
+
     router := NewRouter()
     
     jsonData := `{"id":` + id + `,"name":"` + name + `","balance":` + balance + `,"is_balance_receivable":` + isBalanceReceivable + `}`
@@ -47,18 +51,11 @@ func TestAddUser(t *testing.T) {
  
     router.ServeHTTP(rec, req)
 
-    if rec.Code == 200 {
-        u := domain.User{}
-        json.Unmarshal([]byte(rec.Body.String()), &u)
-        //assert.JSONEq(t, `{"ID":6666,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z","DeletedAt":null,"name":"huga","balance":1000,"is_balance_receivable":true}`, rec.Body.String())
-        assert.Equal(t, name, u.Name)
-        return
-    } else if rec.Code == 500 {
-        assert.JSONEq(t, `{"message":"Internal Server Error"}`, rec.Body.String())
-        return
-    }
-    
+    u := domain.User{}
+    json.Unmarshal([]byte(rec.Body.String()), &u)
+
     assert.Equal(t, http.StatusOK, rec.Code)
+    assert.Equal(t, name, u.Name)
 }
 
 func TestGetAllUsers(t *testing.T) {
@@ -80,5 +77,8 @@ func TestGetUser(t *testing.T) {
 
     router.ServeHTTP(rec, req)
 
+    u := domain.User{}
+    json.Unmarshal([]byte(rec.Body.String()), &u)
+    assert.Equal(t, name, u.Name)
     assert.Equal(t, http.StatusOK, rec.Code)
 }

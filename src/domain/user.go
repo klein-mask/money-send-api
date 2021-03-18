@@ -9,5 +9,4 @@ type User struct {
     Name string `json:"name"`
     Balance int64 `json:"balance"`
     IsBalanceReceivable bool `json:"is_balance_receivable"`
-    //Moneys []*Money `json:"money"`
 }

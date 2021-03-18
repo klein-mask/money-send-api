@@ -43,11 +43,27 @@ func (handler *SqlHandler) UpdateByExpr(obj interface{}, cond string, condValue 
     return handler.db.Model(obj).Where(cond, condValue).Update(column, gorm.Expr(columnExpr, columnValue)).Error
 }
 
-func (handler *SqlHandler) DeleteById(obj interface{}, id string) error {
-    return handler.db.Delete(obj, id).Error
-}
-
-func (handler *SqlHandler) DeleteAll(table string) error {
-    statement := "DELETE FROM " + table
-    return handler.db.Exec(statement).Error
+func (handler *SqlHandler) DeleteById(obj interface{}, id string) error {    
+    tx := handler.db.Begin()
+    defer func() {
+      if r := recover(); r != nil {
+        tx.Rollback()
+      }
+    }()
+  
+    if err := tx.Error; err != nil {
+      return err
+    }
+  
+    if err := tx.Where("id = ?", id).Delete(obj).Error; err != nil {
+       tx.Rollback()
+       return err
+    }
+  
+    if err := tx.Unscoped().Where("id = ?", id).Delete(obj).Error; err != nil {
+       tx.Rollback()
+       return err
+    }
+  
+    return tx.Commit().Error
 }
