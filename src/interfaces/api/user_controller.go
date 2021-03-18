@@ -8,10 +8,16 @@ import (
     "money-send-api/usecase"
 
     "github.com/labstack/echo"
+    _ "fmt"
+    _ "encoding/json"
 )
 
 type UserController struct {
     Interactor usecase.UserInteractor
+}
+
+type JsonData struct {
+    Balance int64 `json:"balance"`
 }
 
 func NewUserController(sqlHandler database.SqlHandler) *UserController {
@@ -56,8 +62,11 @@ func (controller *UserController) GetUser(c echo.Context) error {
 }
 
 func (controller *UserController) UpdateAllBalance(c echo.Context) error {
-    balance, _ := strconv.ParseInt(c.FormValue("balance"), 10, 64)
-    err := controller.Interactor.UpdateAllBalance(balance)
+    jsonData := JsonData{}
+    c.Bind(&jsonData)
+    //bytes, _ := json.Marshal(jsonData) // jsonのバイナリが出力される
+    //fmt.Println(string(bytes))
+    err := controller.Interactor.UpdateAllBalance(jsonData.Balance)
     if err != nil {
         return err
     }
