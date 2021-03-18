@@ -32,7 +32,9 @@ func (db *UserRepository) UpdateAllBalance(balance int64) error {
 
 func (db *UserRepository) UpdateBalance(userId string, balance int64) error {
     user := domain.User{}
-    return db.Update(&user, "ID = ?", userId, "balance", balance)
+    balanceExpr := []int64{balance}
+    //return db.Update(&user, "ID = ?", userId, "balance", balance)
+    return db.UpdateByExpr(&user, "ID = ?", userId, "balance", "balance + ?", balanceExpr)
 }
 
 func (db *UserRepository) DeleteUser(id string) error {

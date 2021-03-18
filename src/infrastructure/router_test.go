@@ -153,9 +153,9 @@ func TestUpdateBalance(t *testing.T) {
     u.IsBalanceReceivable, _ = strconv.ParseBool(user.isBalanceReceivable)
     handler.Create(&u)
 
-    const updatedBalance int64 = 10000
+    const addBalance int64 = 10000
 
-    requestData := `{"balance":` + strconv.FormatInt(updatedBalance, 10) + "}"
+    requestData := `{"balance":` + strconv.FormatInt(addBalance, 10) + "}"
     bodyReader := strings.NewReader(requestData)
 
     req := httptest.NewRequest("PUT", "/users/balance/" + user.id, bodyReader)
@@ -167,9 +167,10 @@ func TestUpdateBalance(t *testing.T) {
     router.ServeHTTP(rec, req)
     assert.Equal(t, http.StatusOK, rec.Code)
 
+    oldBalance, _ := strconv.ParseInt(user.balance, 10, 64)
     handler.FindById(&u, user.id)
     newBalance := u.Balance
-    assert.Equal(t, updatedBalance, newBalance)
+    assert.Equal(t, (oldBalance + addBalance), newBalance)
 }
 
 func TestDeleteUser(t *testing.T) {
