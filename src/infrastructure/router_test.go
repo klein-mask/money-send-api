@@ -169,8 +169,27 @@ func TestUpdateBalance(t *testing.T) {
 
     oldBalance, _ := strconv.ParseInt(user.balance, 10, 64)
     handler.FindById(&u, user.id)
-    newBalance := u.Balance
-    assert.Equal(t, (oldBalance + addBalance), newBalance)
+    addedBalance := u.Balance
+    assert.Equal(t, (oldBalance + addBalance), addedBalance)
+
+
+    const subBalance int64 = -500
+
+    requestData = `{"balance":` + strconv.FormatInt(subBalance, 10) + "}"
+    bodyReader = strings.NewReader(requestData)
+
+    req = httptest.NewRequest("PUT", "/users/balance/" + user.id, bodyReader)
+    req.Header.Add("Content-Type", "application/json")
+    req.Header.Add("Accept", "application/json")
+    rec = httptest.NewRecorder()
+
+    router.ServeHTTP(rec, req)
+    assert.Equal(t, http.StatusOK, rec.Code)
+
+    handler.FindById(&u, user.id)
+    subedBalance := u.Balance
+    assert.Equal(t, (addedBalance + subBalance), subedBalance)
+
 }
 
 func TestDeleteUser(t *testing.T) {
