@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   app:
     container_name: app
@@ -11,6 +10,13 @@ services:
     volumes:
       - ./src:/money-send-api
     working_dir: /money-send-api
+    environment:
+      - POSTGRES_HOST=postgres
+      - TEST_POSTGRES_HOST=test_postgres
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app
+      - POSTGRES_PORT=5432
     tty: true
     depends_on: 
       - postgres
@@ -36,6 +42,6 @@ services:
     ports:
       - 9999:5432
     environment:
-      - POSTGRES_USER=test_admin
-      - POSTGRES_PASSWORD=test_admin_pass
-      - POSTGRES_DB=test_app
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app
