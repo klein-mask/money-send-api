@@ -7,9 +7,9 @@
 curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json' -d '{"name":"taro","password":"taro_pass"}'
 ```
 
-### Add user
+### Regist
 ```
-curl -X POST 'http://localhost:1323/users/add' -H 'Content-Type: application/json' -d '{"id":123,"name":"taro", "password":"taro_pass", "balance":1000, "is_balance_receivable":true}'
+curl -X POST 'http://localhost:1323/regist' -H 'Content-Type: application/json' -H 'Authorization: Bearer {YOUR_JWT}' -d '{"id":123,"name":"taro", "password":"taro_pass", "balance":1000, "is_balance_receivable":true}'
 ```
 
 ### Find all users
