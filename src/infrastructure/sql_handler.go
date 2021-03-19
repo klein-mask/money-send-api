@@ -10,8 +10,9 @@ type SqlHandler struct {
     db *gorm.DB
 }
 
-func NewSqlHandler() database.SqlHandler {
-    dsn := "host=postgres user=admin password=admin_pass dbname=app port=5432 sslmode=disable"
+func NewSqlHandler(p *PostgresDSN) database.SqlHandler {
+    //dsn := "host=postgres user=admin password=admin_pass dbname=app port=5432 sslmode=disable"
+    dsn := "host=" + p.host + " user=" + p.user + " password=" + p.password + " dbname=" + p.dbname + " port=" + p.port + " sslmode=" + p.sslmode
     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
     if err != nil {
