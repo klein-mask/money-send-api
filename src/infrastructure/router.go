@@ -9,7 +9,6 @@ import (
 
 func Init() {
     router := NewRouter()
-
     router.Use(middleware.Logger())
     router.Use(middleware.Recover())
     router.Logger.Fatal(router.Start(":1323"))
@@ -17,14 +16,20 @@ func Init() {
 
 func NewRouter() *echo.Echo {
     e := echo.New()
-    userController := controllers.NewUserController(NewSqlHandler())
+
     e.GET("/healthcheck", healthcheckHandler)
-    e.POST("/users/add", userController.AddUser)
-    e.GET("/users/list", userController.GetAllUsers)
-    e.GET("/users/list/:user_id", userController.GetUser)
-    e.PUT("/users/balance", userController.UpdateAllBalance)
-    e.PUT("/users/balance/:user_id", userController.UpdateBalance)
-    e.DELETE("/users/delete/:user_id", userController.DeleteUser)
+
+    userController := controllers.NewUserController(NewSqlHandler())
+    e.POST("/login", userController.Login)
+    e.POST("/regist", userController.Regist)
+
+    api := e.Group("/api")
+    api.Use(middleware.JWT([]byte("secret")))
+    api.GET("/users/list", userController.GetAllUsers)
+    api.GET("/users/list/:user_id", userController.GetUser)
+    api.PUT("/users/balance", userController.UpdateAllBalance)
+    api.PUT("/users/balance/:user_id", userController.UpdateBalance)
+    api.DELETE("/users/delete/:user_id", userController.DeleteUser)
 
     return e
 }

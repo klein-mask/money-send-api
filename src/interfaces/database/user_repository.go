@@ -2,13 +2,27 @@ package database
 
 import (
     "money-send-api/domain"
+    "errors"
 )
 
 type UserRepository struct {
     SqlHandler
 }
 
-func (db *UserRepository) AddUser(u domain.User) error {
+func (db *UserRepository) Login(name string, password string) error {
+    user := domain.User{}
+    err := db.FindByName(&user, name)
+    if err != nil {
+        return err
+    }
+    if user.Name != name || user.Password != password {
+        return errors.New("Login faild.")
+    }
+
+    return nil
+}
+
+func (db *UserRepository) Regist(u domain.User) error {
     return db.Create(&u)
 }
 
@@ -33,7 +47,6 @@ func (db *UserRepository) UpdateAllBalance(balance int64) error {
 func (db *UserRepository) UpdateBalance(userId string, balance int64) error {
     user := domain.User{}
     balanceExpr := []int64{balance}
-    //return db.Update(&user, "ID = ?", userId, "balance", balance)
     return db.UpdateByExpr(&user, "ID = ?", userId, "balance", "balance + ?", balanceExpr)
 }
 
