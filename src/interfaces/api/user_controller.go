@@ -125,6 +125,13 @@ func (controller *UserController) GetUser(c echo.Context) error {
     return c.JSON(http.StatusOK, user)
 }
 
+// @Summary update all user's balance
+// @Description update all user's balance add or sub
+// @Param data body string true "data"
+// @Success 200
+// @Failure 500 {error} Error
+// @Security Bearer
+// @Router /api/users/balance [post]
 func (controller *UserController) UpdateAllBalance(c echo.Context) error {
     jsonData := JsonData{}
     c.Bind(&jsonData)
@@ -136,7 +143,14 @@ func (controller *UserController) UpdateAllBalance(c echo.Context) error {
     return c.JSON(http.StatusOK, msg)
 }
 
-
+// @Summary update user's balance by user id
+// @Description update user's balance add or sub by user id
+// @Param user_id path string true "user_id"
+// @Param data body string true "data"
+// @Success 200
+// @Failure 500 {error} Error
+// @Security Bearer
+// @Router /api/users/balance/{user_id} [post]
 func (controller *UserController) UpdateBalance(c echo.Context) error {
     userId := c.Param("user_id")
     jsonData := JsonData{}
@@ -149,10 +163,16 @@ func (controller *UserController) UpdateBalance(c echo.Context) error {
     return c.String(http.StatusOK, msg)
 }
 
+// @Summary delete user
+// @Description delete user record by id
+// @Param user_id path string true "user_id"
+// @Success 200
+// @Failure 500 {error} Error
+// @Security Bearer
+// @Router /api/users/delete/{user_id} [post]
 func (controller *UserController) DeleteUser(c echo.Context) error {
     userId := c.Param("user_id")
     err := controller.Interactor.DeleteUser(userId)
-    //fmt.Println(string(userId))
     if err != nil {
         return err
     }
