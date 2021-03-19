@@ -1,22 +1,35 @@
 package database
 
 import (
+    "net/http"
     "money-send-api/domain"
-    "errors"
+    _ "errors"
+    _ "fmt"
 )
 
 type UserRepository struct {
     SqlHandler
 }
 
+type UserError struct {
+    Code int 
+    Message string
+}
+
+func (e UserError) Error() string {
+    em := "[Code]: " + string(e.Code) + ", [Message]: " + e.Message
+    return em
+}
+
 func (db *UserRepository) Login(name string, password string) error {
     user := domain.User{}
     err := db.FindByName(&user, name)
     if err != nil {
-        return err
+        return &UserError{http.StatusInternalServerError, err.Error()}
     }
-    if user.Name != name || user.Password != password {
-        return errors.New("Login faild.")
+
+    if user.Name == "" || user.Name != name || user.Password == "" || user.Password != password {
+        return &UserError{http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized)}
     }
 
     return nil

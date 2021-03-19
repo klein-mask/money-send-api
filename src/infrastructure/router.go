@@ -2,9 +2,12 @@ package infrastructure
 
 import (
     "net/http"
-    "github.com/labstack/echo"
-    "github.com/labstack/echo/middleware"
+    "github.com/labstack/echo/v4"
+    "github.com/labstack/echo/v4/middleware"
     controllers "money-send-api/interfaces/api"
+    es "github.com/swaggo/echo-swagger"
+
+    _ "money-send-api/docs"
 )
 
 func Init() {
@@ -43,6 +46,8 @@ func NewRouter(p *PostgresDSN) *echo.Echo {
     api.PUT("/users/balance", userController.UpdateAllBalance)
     api.PUT("/users/balance/:user_id", userController.UpdateBalance)
     api.DELETE("/users/delete/:user_id", userController.DeleteUser)
+
+    e.GET("/swagger/*", es.WrapHandler)
 
     return e
 }
