@@ -1,0 +1,47 @@
+version: '3'
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./docker/golang/Dockerfile
+    ports:
+      - 1323:1323
+    volumes:
+      - ./src:/money-send-api
+    working_dir: /money-send-api
+    environment:
+      - POSTGRES_HOST=postgres
+      - TEST_POSTGRES_HOST=test_postgres
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app
+      - POSTGRES_PORT=5432
+    tty: true
+    depends_on: 
+      - postgres
+      - test_postgres
+
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app
+
+  test_postgres:
+    container_name: test_postgres
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    ports:
+      - 9999:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin_pass
+      - POSTGRES_DB=app

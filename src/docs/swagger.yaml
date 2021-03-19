@@ -1,0 +1,159 @@
+basePath: /
+host: localhost:1323
+info:
+  contact: {}
+  description: This api is send money to user.
+  title: Send Money API
+  version: "1.0"
+paths:
+  /api/users/balance:
+    post:
+      description: update all user's balance add or sub
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      security:
+      - Bearer: []
+      summary: update all user's balance
+  /api/users/balance/{user_id}:
+    post:
+      description: update user's balance add or sub by user id
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      security:
+      - Bearer: []
+      summary: update user's balance by user id
+  /api/users/delete/{user_id}:
+    post:
+      description: delete user record by id
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      security:
+      - Bearer: []
+      summary: delete user
+  /api/users/list:
+    get:
+      description: get all users from database, use gorm
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      security:
+      - Bearer: []
+      summary: get all users
+  /api/users/list/{user_id}:
+    get:
+      description: get user by id
+      parameters:
+      - description: user_id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      security:
+      - Bearer: []
+      summary: get user by id
+  /login:
+    post:
+      description: login registed user account by id/pass
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              allOf:
+              - type: string
+              - properties:
+                  token:
+                    type: string
+                type: object
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            type: error
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      summary: login user account.
+  /regist:
+    post:
+      description: Regist is create new user account
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: ""
+        "500":
+          description: Internal Server Error
+          schema:
+            type: error
+      summary: Regist user account.
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
