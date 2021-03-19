@@ -9,7 +9,7 @@ import (
     "strconv"
     "encoding/json"
     "money-send-api/domain"
-    _ "bytes"
+    "os"
 )
 
 var (
@@ -38,22 +38,10 @@ func initTestUsers() []TestUser {
     return tus
 }
 
-func newTestPostgresDSN() *PostgresDSN {
-    pd := new(PostgresDSN)
-    pd.host = "test_postgres"
-    pd.user = "test_admin"
-    pd.password = "test_admin_pass"
-    pd.dbname = "test_app"
-    pd.port = "5432"
-    pd.sslmode = "disable"
-
-    return pd
-}
-
-
-
 func TestHealthcheckHandler(t *testing.T) {
-    router := NewRouter(newTestPostgresDSN())
+    os.Setenv("IS_TEST", "1")
+
+    router := NewRouter()
 
     req := httptest.NewRequest("GET", "/healthcheck", nil)
     rec := httptest.NewRecorder()
@@ -65,7 +53,7 @@ func TestHealthcheckHandler(t *testing.T) {
 }
 
 func TestRegist(t *testing.T) {
-    router := NewRouter(newTestPostgresDSN())
+    router := NewRouter()
 
     user := testUsers[0]
     // 登録テスト用ユーザーのレコードが既に存在する場合は事前に削除する
@@ -93,7 +81,7 @@ func TestRegist(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-    router := NewRouter(newTestPostgresDSN())
+    router := NewRouter()
 
     user := testUsers[0]
     jsonData := `{"name":"` + user.Name + `","password":"` + user.Password + `"}`
@@ -114,7 +102,7 @@ func TestLogin(t *testing.T) {
 }
 
 func TestGetAllUsers(t *testing.T) {
-    router := NewRouter(newTestPostgresDSN())
+    router := NewRouter()
 
     req := httptest.NewRequest("GET", "/api/users/list", nil)
     req.Header.Add("Authorization", jwtToken)
@@ -128,7 +116,7 @@ func TestGetAllUsers(t *testing.T) {
 func TestGetUser(t *testing.T) {
     user := testUsers[0]
 
-    router := NewRouter(newTestPostgresDSN())
+    router := NewRouter()
 
     req := httptest.NewRequest("GET", "/api/users/list/" + user.Id, nil)
     req.Header.Add("Authorization", jwtToken)
@@ -145,8 +133,8 @@ func TestGetUser(t *testing.T) {
 
 func TestUpdateAllBalance(t *testing.T) {
     users := testUsers
-    handler := NewSqlHandler(newTestPostgresDSN())
-    router := NewRouter(newTestPostgresDSN())
+    handler := NewSqlHandler()
+    router := NewRouter()
 
     for i := 0; i < len(users); i++ {
         // テスト用ユーザー3人分を初期化
@@ -193,8 +181,8 @@ func TestUpdateAllBalance(t *testing.T) {
 
 func TestUpdateBalance(t *testing.T) {
     user := testUsers[0]
-    handler := NewSqlHandler(newTestPostgresDSN())
-    router := NewRouter(newTestPostgresDSN())
+    handler := NewSqlHandler()
+    router := NewRouter()
 
     handler.DeleteById(&domain.User{}, user.Id)
     u := domain.User{}
@@ -250,8 +238,8 @@ func TestUpdateBalance(t *testing.T) {
 
 func TestDeleteUser(t *testing.T) {
     user := testUsers[0]
-    router := NewRouter(newTestPostgresDSN())
-    handler := NewSqlHandler(newTestPostgresDSN())
+    router := NewRouter()
+    handler := NewSqlHandler()
 
     req := httptest.NewRequest("DELETE", "/api/users/delete/" + user.Id, nil)
     req.Header.Add("Authorization", jwtToken)

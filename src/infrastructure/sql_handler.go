@@ -4,15 +4,24 @@ import (
 	"gorm.io/driver/postgres"
     "gorm.io/gorm"
     "money-send-api/interfaces/database"
+    "os"
 )
 
 type SqlHandler struct {
     db *gorm.DB
 }
 
-func NewSqlHandler(p *PostgresDSN) database.SqlHandler {
-    //dsn := "host=postgres user=admin password=admin_pass dbname=app port=5432 sslmode=disable"
-    dsn := "host=" + p.host + " user=" + p.user + " password=" + p.password + " dbname=" + p.dbname + " port=" + p.port + " sslmode=" + p.sslmode
+func NewSqlHandler() database.SqlHandler {
+    host := os.Getenv("POSTGRES_HOST")
+    if os.Getenv("IS_TEST") == "1" {
+        host = os.Getenv("TEST_POSTGRES_HOST")
+    }
+    user := os.Getenv("POSTGRES_USER")
+    password := os.Getenv("POSTGRES_PASSWORD")
+    dbname := os.Getenv("POSTGRES_DB")
+    port := os.Getenv("POSTGRES_PORT")
+
+    dsn := "host=" + host + " user=" + user + " password=" + password + " dbname=" + dbname + " port=" + port + " sslmode=disable"
     db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
     if err != nil {

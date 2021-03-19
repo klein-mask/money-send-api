@@ -11,30 +11,18 @@ import (
 )
 
 func Init() {
-    router := NewRouter(newPostgresDSN())
+    router := NewRouter()
     router.Use(middleware.Logger())
     router.Use(middleware.Recover())
     router.Logger.Fatal(router.Start(":1323"))
 }
 
-func newPostgresDSN() *PostgresDSN {
-    pd := new(PostgresDSN)
-    pd.host = "postgres"
-    pd.user = "admin"
-    pd.password = "admin_pass"
-    pd.dbname = "app"
-    pd.port = "5432"
-    pd.sslmode = "disable"
-
-    return pd
-}
-
-func NewRouter(p *PostgresDSN) *echo.Echo {
+func NewRouter() *echo.Echo {
     e := echo.New()
 
     e.GET("/healthcheck", healthcheckHandler)
 
-    userController := controllers.NewUserController(NewSqlHandler(p))
+    userController := controllers.NewUserController(NewSqlHandler())
 
     e.POST("/login", userController.Login)
     e.POST("/regist", userController.Regist)

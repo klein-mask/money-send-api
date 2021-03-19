@@ -1,22 +1,22 @@
 # 💰 Money-send-api
-![screenshot](https://user-images.githubusercontent.com/50162453/111762376-4c5cc000-88e4-11eb-8f92-5d321dff08c8.png)
+![screenshot](https://user-images.githubusercontent.com/50162453/111777908-41f7f180-88f7-11eb-94bf-8c2289e467dd.png)
 
 ## 🍺 Usage
 
 ### 1. Clone this repository and cd this dir.
 ```
-$ git clone https://github.com/klein-mask/money-send-api.git
-$ cd money-send-api
+git clone https://github.com/klein-mask/money-send-api.git
+cd money-send-api
 ```
 
 ### 2. Build and start docker containers.
 ```
-$ docker-compose up -d --build
+docker-compose up -d --build
 ```
 
 ### 3. Start app
 ```
-$ docker-compose exec go run main.go
+docker-compose exec app go run main.go&
 ```
 
 ## 📘 Swagger document
@@ -29,7 +29,7 @@ $ docker-compose exec go run main.go
 
 #### Request
 ```
-$ curl -X POST 'http://localhost:1323/regist' -H 'Content-Type: application/json' -d '{"id":9999, "name":"example_user", "password":"example_user_pass", "balance":1000, "is_balance_receivable":true}'
+curl -X POST 'http://localhost:1323/regist' -H 'Content-Type: application/json' -d '{"id":9999, "name":"example_user", "password":"example_user_pass", "balance":1000, "is_balance_receivable":true}'
 ```
 
 #### Response
@@ -50,7 +50,7 @@ $ curl -X POST 'http://localhost:1323/regist' -H 'Content-Type: application/json
 
 #### Request
 ```
-$ curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json' -d '{"name":"example_user","password":"example_user_pass"}'
+curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json' -d '{"name":"example_user","password":"example_user_pass"}'
 ```
 
 #### Response
@@ -69,7 +69,7 @@ $ curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json'
 
 #### Request
 ```
-$ curl -X GET 'http://localhost:1323/api/users/list' -H 'Authorization: Bearer {YOUR_JWT}'
+curl -X GET 'http://localhost:1323/api/users/list' -H 'Authorization: Bearer {YOUR_JWT}'
 ```
 
 #### Response
@@ -93,7 +93,7 @@ $ curl -X GET 'http://localhost:1323/api/users/list' -H 'Authorization: Bearer {
 
 #### Request
 ```
-$ curl -X GET 'http://localhost:1323/api/users/list/{USER_ID}' -H 'Authorization: Bearer {YOUR_JWT}'
+curl -X GET 'http://localhost:1323/api/users/list/{USER_ID}' -H 'Authorization: Bearer {YOUR_JWT}'
 ```
 
 #### Response
@@ -123,7 +123,7 @@ $ curl -X GET 'http://localhost:1323/api/users/list/{USER_ID}' -H 'Authorization
 
 #### Request
 ```
-$ curl -X PUT 'http://localhost:1323/api/users/balance' -H 'Content-Type: application/json' -H 'Authorization: Bearer {YOUR_JWT}' -d '{"balance":10000}'
+curl -X PUT 'http://localhost:1323/api/users/balance' -H 'Content-Type: application/json' -H 'Authorization: Bearer {YOUR_JWT}' -d '{"balance":10000}'
 ```
 
 #### Response
@@ -142,7 +142,7 @@ $ curl -X PUT 'http://localhost:1323/api/users/balance' -H 'Content-Type: applic
 
 #### Request
 ```
-$ curl -X PUT 'http://localhost:1323/api/users/balance/{USER_ID}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {YOUR_JWT}' -d '{"balance":10000}'
+curl -X PUT 'http://localhost:1323/api/users/balance/{USER_ID}' -H 'Content-Type: application/json' -H 'Authorization: Bearer {YOUR_JWT}' -d '{"balance":10000}'
 ```
 
 #### Response
@@ -155,7 +155,7 @@ $ curl -X PUT 'http://localhost:1323/api/users/balance/{USER_ID}' -H 'Content-Ty
 
 #### Request
 ```
-$ curl -X DELETE 'http://localhost:1323/api/users/delete/{USER_ID}' -H 'Authorization: Bearer {YOUR_JWT}'
+curl -X DELETE 'http://localhost:1323/api/users/delete/{USER_ID}' -H 'Authorization: Bearer {YOUR_JWT}'
 ```
 
 #### Response
@@ -165,9 +165,9 @@ $ curl -X DELETE 'http://localhost:1323/api/users/delete/{USER_ID}' -H 'Authoriz
 
 ## 🏧 Tests
 ```
-$ docker-compose exec app go test -v ./infrastructure
+docker-compose exec app go test -v ./infrastructure
 ```
 
 ## Database
 ### users
-![er](https://user-images.githubusercontent.com/50162453/111763130-1d931980-88e5-11eb-98c9-cd2cc7520f8c.png)
+![er](https://user-images.githubusercontent.com/50162453/111777952-4d4b1d00-88f7-11eb-9002-c05ce4e1d153.png)
