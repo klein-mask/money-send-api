@@ -110,7 +110,7 @@ func TestLogin(t *testing.T) {
     json.Unmarshal([]byte(rec.Body.String()), &jwt)
 
 
-    jwtToken = "Bearer " + jwt.Token
+    jwtToken = jwt.Token
 }
 
 func TestGetAllUsers(t *testing.T) {
