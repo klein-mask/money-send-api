@@ -14,6 +14,7 @@ services:
     tty: true
     depends_on: 
       - postgres
+      - test_postgres
 
   postgres:
     container_name: postgres
@@ -26,3 +27,15 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin_pass
       - POSTGRES_DB=app
+
+  test_postgres:
+    container_name: test_postgres
+    build:
+      context: .
+      dockerfile: ./docker/postgres/Dockerfile
+    ports:
+      - 9999:5432
+    environment:
+      - POSTGRES_USER=test_admin
+      - POSTGRES_PASSWORD=test_admin_pass
+      - POSTGRES_DB=test_app
