@@ -7,6 +7,7 @@ import (
     "money-send-api/usecase"
     "github.com/labstack/echo/v4"
     "github.com/dgrijalva/jwt-go"
+    "golang.org/x/crypto/bcrypt"
     "time"
     _ "fmt"
 )
@@ -33,6 +34,12 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
         },
     }
 }
+
+func passwordToHash(password string) (string, error) {
+    hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+    return string(hash), err
+}
+
 
 // @Summary login user account.
 // @Description login registed user account by id/pass
@@ -85,7 +92,14 @@ func (controller *UserController) Regist(c echo.Context) error {
     u := domain.User{}
     c.Bind(&u)
 
-    err := controller.Interactor.Regist(u)
+    hashedPassword, err := passwordToHash(u.Password)
+    if err != nil {
+        return err
+    }
+
+    u.Password = hashedPassword
+
+    err = controller.Interactor.Regist(u)
     if err != nil {
         return err
     }

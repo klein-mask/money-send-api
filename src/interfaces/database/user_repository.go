@@ -3,8 +3,7 @@ package database
 import (
     "net/http"
     "money-send-api/domain"
-    _ "errors"
-    _ "fmt"
+    "golang.org/x/crypto/bcrypt"
 )
 
 type UserRepository struct {
@@ -27,8 +26,8 @@ func (db *UserRepository) Login(name string, password string) error {
     if err != nil {
         return &UserError{http.StatusInternalServerError, err.Error()}
     }
-
-    if user.Name == "" || user.Name != name || user.Password == "" || user.Password != password {
+    
+    if user.Name == "" || user.Name != name || user.Password == "" || comparePasswordAndHash(user.Password, password) != nil {
         return &UserError{http.StatusUnauthorized, http.StatusText(http.StatusUnauthorized)}
     }
 
@@ -66,4 +65,8 @@ func (db *UserRepository) UpdateBalance(userId string, balance int64) error {
 func (db *UserRepository) DeleteUser(id string) error {
     user := []domain.User{}
     return db.DeleteById(&user, id)
+}
+
+func comparePasswordAndHash(hashedPassword string, password string) error {
+    return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
