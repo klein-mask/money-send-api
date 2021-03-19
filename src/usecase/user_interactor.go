@@ -6,8 +6,12 @@ type UserInteractor struct {
     UserRepository UserRepository
 }
 
-func (interactor *UserInteractor) AddUser(u domain.User) error {
-    return interactor.UserRepository.AddUser(u)
+func (interactor *UserInteractor) Login(name string, password string) error {
+    return interactor.UserRepository.Login(name, password)
+}
+
+func (interactor *UserInteractor) Regist(u domain.User) error {
+    return interactor.UserRepository.Regist(u)
 }
 
 func (interactor *UserInteractor) GetAllUsers() ([]domain.User, error) {

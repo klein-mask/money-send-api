@@ -3,7 +3,6 @@ package infrastructure
 import (
 	"gorm.io/driver/postgres"
     "gorm.io/gorm"
-
     "money-send-api/interfaces/database"
 )
 
@@ -33,6 +32,10 @@ func (handler *SqlHandler) FindAll(obj interface{}) error {
 
 func (handler *SqlHandler) FindById(obj interface{}, id string) error {
     return handler.db.Where("ID = ?", id).Find(obj).Error
+}
+
+func (handler *SqlHandler) FindByName(obj interface{}, name string) error {
+    return handler.db.Where("Name = ?", name).Find(obj).Error
 }
 
 func (handler *SqlHandler) Update(obj interface{}, cond string, condValue interface{}, column string, columnValue interface{}) error {

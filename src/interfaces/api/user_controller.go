@@ -6,10 +6,18 @@ import (
     "money-send-api/interfaces/database"
     "money-send-api/usecase"
     "github.com/labstack/echo"
+    "github.com/dgrijalva/jwt-go"
+    "time"
+    _ "fmt"
 )
 
 type UserController struct {
     Interactor usecase.UserInteractor
+}
+
+type LoginUser struct {
+    Name string `json:"name"`
+    Password string `json:"password"`
 }
 
 type JsonData struct {
@@ -26,11 +34,45 @@ func NewUserController(sqlHandler database.SqlHandler) *UserController {
     }
 }
 
-func (controller *UserController) AddUser(c echo.Context) error {
+func (controller *UserController) Login(c echo.Context) error {
+    lu := LoginUser{}
+    c.Bind(&lu)
+
+    name := lu.Name
+    password := lu.Password
+
+    err := controller.Interactor.Login(name, password)
+
+    //fmt.Println(err)
+    if err != nil {
+        return err
+    }
+    token := jwt.New(jwt.SigningMethodHS256)
+
+    // set claims
+    claims := token.Claims.(jwt.MapClaims)
+    claims["name"] = name
+    claims["admin"] = true
+    claims["iat"] = time.Now().Unix()
+    claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+    // generate encoded token and send it as response
+    t, err := token.SignedString([]byte("secret"))
+    if err != nil {
+        return err
+    }
+    return c.JSON(http.StatusOK, map[string]string{
+        "token": t,
+    })
+
+    return echo.ErrUnauthorized
+}
+
+func (controller *UserController) Regist(c echo.Context) error {
     u := domain.User{}
     c.Bind(&u)
 
-    err := controller.Interactor.AddUser(u)
+    err := controller.Interactor.Regist(u)
     if err != nil {
         return err
     }
