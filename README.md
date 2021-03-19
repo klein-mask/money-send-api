@@ -1,6 +1,58 @@
 # 💰 Money-send-api
 ![screenshot](https://user-images.githubusercontent.com/50162453/111777908-41f7f180-88f7-11eb-94bf-8c2289e467dd.png)
 
+**This api is send or receive money users.**
+
+## 📂 Directories
+```
+├── README.md
+├── docker
+│   ├── golang
+│   │   └── Dockerfile
+│   └── postgres
+│       ├── Dockerfile
+│       └── init
+│           └── create-table.sql
+├── docker-compose.yml
+├── images
+│   ├── er.png
+│   └── screenshot.PNG
+└── src
+    ├── docs
+    │   ├── docs.go
+    │   ├── swagger.json
+    │   └── swagger.yaml
+    ├── domain
+    │   └── user.go
+    ├── go.mod
+    ├── go.sum
+    ├── infrastructure
+    │   ├── router.go
+    │   ├── router_test.go
+    │   └── sql_handler.go
+    ├── interfaces
+    │   ├── api
+    │   │   └── user_controller.go
+    │   └── database
+    │       ├── sql_handler.go
+    │       └── user_repository.go
+    ├── main.go
+    ├── money-send-api
+    └── usecase
+        ├── user_interactor.go
+        └── user_repository.go
+```
+
+### docker
+- **Create docker image build files**
+
+### src
+- **Golang api code files**
+
+### src/docs
+- **Swagger document files**
+
+
 ## 🍺 Usage
 
 ### 1. Clone this repository and cd this dir.
@@ -14,16 +66,30 @@ cd money-send-api
 docker-compose up -d --build
 ```
 
-### 3. Start app
+### 3. Serve API
+
+go run or build
+#### go run
 ```
 docker-compose exec app go run main.go&
 ```
 
+#### build run
+```
+docker-compose exec app go build
+docker-compose exec app ./money-send-api&
+```
+
+### 4. End serve API
+```
+docker-compose down
+```
+---
+
 ## 📘 Swagger document
-- **This API document by swagger.**
 ### http://localhost:1323/swagger/index.html
 
-## 🎁 Examples
+## 🎁 API Examples
 ### Regist
 - **Regist new user account**
 
@@ -62,7 +128,7 @@ curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json' -
 
 ---
 
-### 💭 <span style="color: pink;">Later api is must jwt token in header</span>
+### 💭 <span style="color: pink;">Later api must use jwt token in header</span>
 
 ### GetUsers
 - **Get registed user list**

@@ -59,18 +59,15 @@ func (controller *UserController) Login(c echo.Context) error {
 
     if err != nil {
         return err
-        //return c.JSON(err.Code, err.Message)
     }
     token := jwt.New(jwt.SigningMethodHS256)
 
-    // set claims
     claims := token.Claims.(jwt.MapClaims)
     claims["name"] = name
     claims["admin"] = true
     claims["iat"] = time.Now().Unix()
     claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
 
-    // generate encoded token and send it as response
     t, err := token.SignedString([]byte("secret"))
     if err != nil {
         return err
