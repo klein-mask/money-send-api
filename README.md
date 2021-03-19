@@ -2,9 +2,14 @@
 
 ## usage
 
+### Login
+```
+curl -X POST 'http://localhost:1323/login' -H 'Content-Type: application/json' -d '{"name":"taro","password":"taro_pass"}'
+```
+
 ### Add user
 ```
-curl -X POST 'http://localhost:1323/users/add' -H 'Content-Type: application/json' -d '{"id":123,"name":"taro", "balance":1000, "is_balance_receivable":true}'
+curl -X POST 'http://localhost:1323/users/add' -H 'Content-Type: application/json' -d '{"id":123,"name":"taro", "password":"taro_pass", "balance":1000, "is_balance_receivable":true}'
 ```
 
 ### Find all users
