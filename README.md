@@ -1,5 +1,5 @@
 # 💰 Money-send-api
-![screenshot](https://user-images.githubusercontent.com/50162453/111751551-fd109280-88d7-11eb-9daf-33c1af109f4a.jpg)
+![screenshot](https://user-images.githubusercontent.com/50162453/111762376-4c5cc000-88e4-11eb-8f92-5d321dff08c8.png)
 
 ## 🍺 Usage
 
