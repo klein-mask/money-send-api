@@ -169,4 +169,5 @@ $ docker-compose exec app go test -v ./infrastructure
 ```
 
 ## Database
-![er](https://user-images.githubusercontent.com/50162453/111761433-3d294280-88e3-11eb-8116-15c25f502d58.png)
+### users
+![er](https://user-images.githubusercontent.com/50162453/111763130-1d931980-88e5-11eb-98c9-cd2cc7520f8c.png)
